@@ -1,4 +1,5 @@
 ﻿using System;
+using SimpleCalculator.NotationConverter;
 
 namespace SimpleCalculator
 {
@@ -6,7 +7,13 @@ namespace SimpleCalculator
     {
         private static void Main(string[] args)
         {
-            throw new NotImplementedException();
+            var infixExpressionTokens = InfixExpressionPreprocessor.Tokenize("(10 +2) *40 + 4");
+            var infixToPostfixConverter = new InfixToPostfixNotationConverter(infixExpressionTokens);
+
+            foreach (var word in infixToPostfixConverter.Convert())
+                Console.Write(word + ' ');
+
+            Console.WriteLine();
         }
     }
 }
