@@ -1,4 +1,5 @@
 ﻿using System;
+using SimpleCalculator.Calculator;
 using SimpleCalculator.NotationConverter;
 
 namespace SimpleCalculator
@@ -14,6 +15,8 @@ namespace SimpleCalculator
                 Console.Write(word + ' ');
 
             Console.WriteLine();
+
+            Console.WriteLine(PostfixNotationCalculator.Calculate(infixToPostfixConverter.Convert()));
         }
     }
 }
