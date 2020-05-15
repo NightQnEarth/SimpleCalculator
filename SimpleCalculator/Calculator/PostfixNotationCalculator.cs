@@ -5,8 +5,8 @@ namespace SimpleCalculator.Calculator
 {
     public static class PostfixNotationCalculator
     {
-        private static readonly Dictionary<string, Func<int, int, int>> arithmeticOperations =
-            new Dictionary<string, Func<int, int, int>>
+        private static readonly Dictionary<string, Func<double, double, double>> arithmeticOperations =
+            new Dictionary<string, Func<double, double, double>>
             {
                 ["+"] = (a, b) => a + b,
                 ["-"] = (a, b) => a - b,
@@ -14,12 +14,12 @@ namespace SimpleCalculator.Calculator
                 ["/"] = (a, b) => a / b
             };
 
-        public static int Calculate(IEnumerable<string> postfixNotationExpression)
+        public static double Calculate(IEnumerable<string> postfixNotationExpression)
         {
-            var computeStack = new Stack<int>();
+            var computeStack = new Stack<double>();
 
             foreach (var token in postfixNotationExpression)
-                if (int.TryParse(token, out var operand))
+                if (double.TryParse(token, out var operand))
                     computeStack.Push(operand);
                 else if (arithmeticOperations.ContainsKey(token))
                 {

@@ -1,27 +1,17 @@
-﻿using System;
-using CommandLine;
+﻿using CommandLine;
 
 namespace SimpleCalculator.CmdClient
 {
+    // TODO: check it
     // ReSharper disable once ClassNeverInstantiated.Global
     // CalculatorOptions class instantiated by reflection in CommandLineClient.GetOptions().
     public class CalculatorOptions
     {
-        private string arithmeticExpression;
-
-        [Value(0, MetaName = "arithmetic_expression",
+        [Value(0, MetaName = "infix_notation_arithmetic_expression",
                Required = true,
-               HelpText = "Type arithmetic expression you want to calculate. For example: 1 + (3 - 5) * 8 / 7")]
-        public string ArithmeticExpression
-        {
-            get => arithmeticExpression;
-            set
-            {
-                if (value.Length < 3)
-                    throw new ArgumentException("Was passed invalid arithmetic expression.");
-
-                arithmeticExpression = value;
-            }
-        }
+               HelpText = "Type infix notation arithmetic expression you want to calculate." +
+                          "\n\r" +
+                          "For example: (1 + 9) * (32-12)")]
+        public string ArithmeticExpression { get; set; }
     }
 }

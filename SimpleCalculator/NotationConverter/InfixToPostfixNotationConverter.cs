@@ -26,7 +26,7 @@ namespace SimpleCalculator.NotationConverter
                     operatorsStack.Push(token);
                 else if (token is CalculatorHelper.CloseBracket)
                     ProcessCloseBracket();
-                else if (int.TryParse(token, out _))
+                else if (double.TryParse(token, out _))
                     postfixNotation.Add(token);
                 else
                     throw new ArgumentException($"Invalid token \"{token}\" in [{tokenIndex}] position.");
