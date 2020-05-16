@@ -4,7 +4,7 @@ using CommandLine;
 
 namespace SimpleCalculator.CmdClient
 {
-    public class CommandLineClient
+    public static class CommandLineClient
     {
         // ReSharper disable once ParameterTypeCanBeEnumerable.Global
         // As input parameter passing only command-line arguments from Main(string[] args).
