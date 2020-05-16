@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -8,6 +9,9 @@ namespace SimpleCalculator.NotationConverter
     {
         public static IEnumerable<string> Tokenize(string infixExpression)
         {
+            if (infixExpression is null)
+                throw new ArgumentNullException(nameof(infixExpression));
+
             var builder = new StringBuilder();
 
             foreach (var symbol in infixExpression)
