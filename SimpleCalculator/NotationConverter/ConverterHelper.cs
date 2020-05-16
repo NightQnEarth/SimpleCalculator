@@ -1,6 +1,6 @@
-﻿namespace SimpleCalculator
+﻿namespace SimpleCalculator.NotationConverter
 {
-    public static class CalculatorHelper
+    public static class ConverterHelper
     {
         public const string OpenBracket = "(";
         public const string CloseBracket = ")";

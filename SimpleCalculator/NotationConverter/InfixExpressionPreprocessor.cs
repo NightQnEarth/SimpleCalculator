@@ -28,8 +28,8 @@ namespace SimpleCalculator.NotationConverter
         }
 
         private static bool IsSpecialSymbol(string symbol) =>
-            CalculatorHelper.Operators.Contains(symbol) ||
-            symbol is CalculatorHelper.OpenBracket ||
-            symbol is CalculatorHelper.CloseBracket;
+            ConverterHelper.Operators.Contains(symbol) ||
+            symbol is ConverterHelper.OpenBracket ||
+            symbol is ConverterHelper.CloseBracket;
     }
 }

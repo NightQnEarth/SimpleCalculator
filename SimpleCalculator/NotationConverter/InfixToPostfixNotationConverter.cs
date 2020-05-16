@@ -6,19 +6,14 @@ using System.Linq;
 
 namespace SimpleCalculator.NotationConverter
 {
-    public class InfixToPostfixNotationConverter
+    public static class InfixToPostfixNotationConverter
     {
-        private readonly IEnumerable<string> infixArithmeticExpression;
-        private readonly Stack<string> operatorsStack = new Stack<string>();
-        private readonly List<string> postfixNotation = new List<string>();
-
-        public InfixToPostfixNotationConverter(IEnumerable<string> infixArithmeticExpression) =>
-            this.infixArithmeticExpression = infixArithmeticExpression;
-
-        public IEnumerable<string> Convert()
+        public static IEnumerable<string> Convert(IEnumerable<string> infixArithmeticExpression)
         {
-            var tokenIndex = 0;
+            var operatorsStack = new Stack<string>();
+            var postfixNotation = new List<string>();
             string previousToken = null;
+            var tokenIndex = 0;
 
             foreach (var token in infixArithmeticExpression)
             {
@@ -26,12 +21,12 @@ namespace SimpleCalculator.NotationConverter
                     IsOperandBeforeOpenBracket(token, previousToken))
                     throw new ArgumentException("cannot found operator between bracket and operand.");
 
-                if (CalculatorHelper.Operators.Contains(token))
-                    ProcessOperator(token);
-                else if (token is CalculatorHelper.OpenBracket)
+                if (ConverterHelper.Operators.Contains(token))
+                    ProcessOperator(token, operatorsStack, postfixNotation);
+                else if (token is ConverterHelper.OpenBracket)
                     operatorsStack.Push(token);
-                else if (token is CalculatorHelper.CloseBracket)
-                    ProcessCloseBracket();
+                else if (token is ConverterHelper.CloseBracket)
+                    ProcessCloseBracket(operatorsStack, postfixNotation);
                 else if (!token.Contains(',') && double.TryParse(token, out _))
                     postfixNotation.Add(token);
                 else
@@ -41,28 +36,24 @@ namespace SimpleCalculator.NotationConverter
                 previousToken = token;
             }
 
-            while (operatorsStack.TryPop(out var poppedOperator))
-            {
-                if (poppedOperator is CalculatorHelper.OpenBracket)
-                    throw new ArithmeticException("was found excess open bracket.");
-
-                postfixNotation.Add(poppedOperator);
-            }
+            FlushStack(operatorsStack, postfixNotation);
 
             return postfixNotation;
         }
 
         private static bool IsOperandAfterCloseBracket(string token, string previousToken) =>
             double.TryParse(token, out _) &&
-            previousToken is CalculatorHelper.CloseBracket;
+            previousToken is ConverterHelper.CloseBracket;
 
         private static bool IsOperandBeforeOpenBracket(string token, string previousToken) =>
             double.TryParse(previousToken, out _) &&
-            token is CalculatorHelper.OpenBracket;
+            token is ConverterHelper.OpenBracket;
 
-        private void ProcessOperator(string operatorSymbol)
+        private static void ProcessOperator(string operatorSymbol,
+                                            Stack<string> operatorsStack,
+                                            ICollection<string> postfixNotation)
         {
-            while (operatorsStack.TryPeek(out var peekedOperator) && peekedOperator != CalculatorHelper.OpenBracket)
+            while (operatorsStack.TryPeek(out var peekedOperator) && peekedOperator != ConverterHelper.OpenBracket)
             {
                 if (operatorSymbol.IsOperatorPriorityThan(peekedOperator))
                     break;
@@ -73,13 +64,13 @@ namespace SimpleCalculator.NotationConverter
             operatorsStack.Push(operatorSymbol);
         }
 
-        private void ProcessCloseBracket()
+        private static void ProcessCloseBracket(Stack<string> operatorsStack, ICollection<string> postfixNotation)
         {
             var wasFoundOpenBracket = false;
 
             while (operatorsStack.TryPop(out var poppedOperator))
             {
-                if (poppedOperator == CalculatorHelper.OpenBracket)
+                if (poppedOperator == ConverterHelper.OpenBracket)
                 {
                     wasFoundOpenBracket = true;
                     break;
@@ -90,6 +81,17 @@ namespace SimpleCalculator.NotationConverter
 
             if (!wasFoundOpenBracket)
                 throw new ArithmeticException("was found excess close bracket.");
+        }
+
+        private static void FlushStack(Stack<string> operatorsStack, ICollection<string> postfixNotation)
+        {
+            while (operatorsStack.TryPop(out var poppedOperator))
+            {
+                if (poppedOperator is ConverterHelper.OpenBracket)
+                    throw new ArithmeticException("was found excess open bracket.");
+
+                postfixNotation.Add(poppedOperator);
+            }
         }
     }
 }

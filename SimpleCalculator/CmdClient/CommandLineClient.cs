@@ -7,7 +7,7 @@ namespace SimpleCalculator.CmdClient
     public static class CommandLineClient
     {
         // ReSharper disable once ParameterTypeCanBeEnumerable.Global
-        // As input parameter passing only command-line arguments from Main(string[] args).
+        // As an input parameter can only be passed command-line arguments from Main(string[] args).
         public static CalculatorOptions GetOptions(string[] args)
         {
             CalculatorOptions calculatorOptions = null;

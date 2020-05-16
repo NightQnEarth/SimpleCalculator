@@ -11,7 +11,7 @@ namespace SimpleCalculator.CmdClient
         [Value(0, MetaName = "infix_notation_arithmetic_expression",
                Required = true,
                HelpText = "Type infix notation arithmetic expression you want to calculate." +
-                          "\n\r" +
+                          "\r\n" +
                           "For example: (1.5 + 8.5) * (32-12) / 2")]
         public string ArithmeticExpression { get; set; }
     }
